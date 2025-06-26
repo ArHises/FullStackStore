@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Setter
 @Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,12 +17,14 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(name = "email")
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(nullable = false)
     private String password;
+
+    private String role = "ROLE_USER";
 }
