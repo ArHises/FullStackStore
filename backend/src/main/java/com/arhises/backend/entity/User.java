@@ -1,12 +1,14 @@
 package com.arhises.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Entity
 @Setter
 @Getter
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -22,7 +24,4 @@ public class User {
 
     @Column(name = "password")
     private String password;
-
-    public User() {}
-
 }

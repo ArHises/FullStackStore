@@ -2,12 +2,15 @@ package com.arhises.backend.controller;
 
 import com.arhises.backend.dto.UserDto;
 import com.arhises.backend.entity.User;
+import com.arhises.backend.mapper.UserMapper;
 import com.arhises.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -15,15 +18,25 @@ import java.util.Collection;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @GetMapping
-    public Iterable<UserDto> getAllUsers() {
+    public Iterable<UserDto> getAllUsers( @RequestParam String sort) {
+//        return userRepository
+//                .findAll()
+//                .stream()
+//                .map( user -> new UserDto(user.getId()
+//                        , user.getName()
+//                        , user.getEmail()))
+//                .toList();
+        if (!Set.of("name", "email").contains(sort)){
+            sort = "name";
+        }
+
         return userRepository
-                .findAll()
+                .findAll(Sort.by(sort))
                 .stream()
-                .map( user -> new UserDto(user.getId()
-                        , user.getName()
-                        , user.getEmail()))
+                .map(userMapper::toDto)
                 .toList();
     }
 
@@ -33,8 +46,9 @@ public class UserController {
         if (user == null){
             return ResponseEntity.notFound().build();
         }
-        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail());
-        return ResponseEntity.ok(userDto);
+//        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail());
+//        return ResponseEntity.ok(userDto);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @PostMapping("/add")

@@ -1,11 +1,15 @@
 package com.arhises.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
-public class UserDto { // the fields we want to transfer between app layers
+@Setter
+@AllArgsConstructor
+public class UserDto {
+    @JsonIgnore
     private Long id;
     private String name;
     private String email;
