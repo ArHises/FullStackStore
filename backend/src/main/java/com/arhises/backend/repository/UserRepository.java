@@ -1,6 +1,6 @@
 package com.arhises.backend.repository;
 
-import com.arhises.backend.entity.User;
+import com.arhises.backend.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 // JpaRepository for DTO and Lists
-public interface UserRepository  extends JpaRepository<User, Long> {
+public interface UserRepository  extends JpaRepository<UserEntity, Long> {
     // searching logic if needed... example: public User findByEmail(String email);
     // By default, CrudRepository
     //  userRepository.findAll() — get all users
@@ -16,5 +16,5 @@ public interface UserRepository  extends JpaRepository<User, Long> {
     //  userRepository.save(user) — add or update a user
     //  userRepository.deleteById(id) — delete a user by ID
 
-    Optional<User> findByUsername(String user);
+    Optional<UserEntity> findByUsername(String user);
 }
