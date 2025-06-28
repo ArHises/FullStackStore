@@ -21,7 +21,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping
-    public Iterable<UserDto> getAllUsers( @RequestParam String sort) {
+    public Iterable<UserDto> getAllUsers( @RequestParam(required = false, defaultValue = "") String sort) {
 //        return userRepository
 //                .findAll()
 //                .stream()
@@ -53,14 +53,14 @@ public class UserController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addUser(@RequestBody User user) {
-        if (!checkValid(user)) {
-            return ResponseEntity.badRequest().body("Invalid user data or email already exists");
-        }
+//        if (!checkValid(user)) {
+//            return ResponseEntity.badRequest().body("Invalid user data or email already exists");
+//        }
         return ResponseEntity.ok(userRepository.save(user));
     }
 
     private boolean checkValid(User user) {
-        if (user.getName() == null || user.getName().isEmpty() ||
+        if (user.getUsername() == null || user.getUsername().isEmpty() ||
             user.getEmail() == null || user.getEmail().isEmpty() ||
             user.getPassword() == null || user.getPassword().isEmpty()) {
             return false;
