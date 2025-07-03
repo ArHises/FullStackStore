@@ -5,12 +5,14 @@ import com.arhises.backend.entity.UserEntity;
 import com.arhises.backend.mapper.UserMapper;
 import com.arhises.backend.repository.UserRepository;
 import com.arhises.backend.service.UserService;
+
 import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.Set;
 
 @RestController
@@ -50,31 +52,13 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody UserEntity user){
-        return userService.verify(user);
-
-//        System.out.println(user.getUsername() + " just logged in");
-//        return user.getUsername() + " just logged in";
+        return userService.verify(user) + "\n" + userRepository.findByUsername(user.getUsername()).toString();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addUser(@RequestBody UserEntity user) {
-//        if (!checkValid(user)) {
-//            return ResponseEntity.badRequest().body("Invalid user data or email already exists");
-//        }
-        return ResponseEntity.ok(userRepository.save(user));
-    }
-
-    private boolean checkValid(UserEntity user) {
-        if (user.getUsername() == null || user.getUsername().isEmpty() ||
-            user.getEmail() == null || user.getEmail().isEmpty() ||
-            user.getPassword() == null || user.getPassword().isEmpty()) {
-            return false;
-        }
-        // Check if email already exists
-        boolean emailExists = ((Collection<UserEntity>) userRepository.findAll())
-            .stream()
-            .anyMatch(u -> u.getEmail().equals(user.getEmail()));
-        return !emailExists;
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void adminOnlyMethod() {
+        System.out.println("Admin only method");
     }
 
 }

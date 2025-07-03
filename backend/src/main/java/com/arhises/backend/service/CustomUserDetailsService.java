@@ -4,11 +4,13 @@ import com.arhises.backend.entity.UserEntity;
 import com.arhises.backend.entity.UserPrincipal;
 import com.arhises.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -25,6 +27,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         System.out.println(user.getUsername() + "(" + user.getRole() + ") Connected");
 
-        return new UserPrincipal(user);
+//        return new UserPrincipal(user);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+        );
+
     }
 }
