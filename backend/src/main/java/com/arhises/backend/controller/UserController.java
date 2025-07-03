@@ -8,7 +8,6 @@ import com.arhises.backend.service.UserService;
 
 import lombok.AllArgsConstructor;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,29 +19,19 @@ import java.util.Set;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @GetMapping
     public Iterable<UserDto> getAllUsers( @RequestParam(required = false, defaultValue = "") String sort) {
         if (!Set.of("username", "email").contains(sort)){
             sort = "username";
         }
-        return userRepository
-                .findAll(Sort.by(sort))
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userService.getAllUsers(sort);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        UserEntity user = userRepository.findById(id).orElse(null);
-        if (user == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(userMapper.toDto(user));
+        return userService.getUserById(id);
     }
 
     @PostMapping("/register")
@@ -57,8 +46,9 @@ public class UserController {
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public void adminOnlyMethod() {
+    public String adminOnlyMethod() {
         System.out.println("Admin only method");
+        return "Welcome back Admin!";
     }
 
 }
