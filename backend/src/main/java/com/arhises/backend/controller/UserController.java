@@ -52,7 +52,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody UserEntity user){
-        return userService.verify(user) + "\n" + userRepository.findByUsername(user.getUsername()).toString();
+        return userService.verify(user);
     }
 
     @GetMapping("/admin")
