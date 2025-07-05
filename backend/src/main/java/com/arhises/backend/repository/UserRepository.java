@@ -16,5 +16,6 @@ public interface UserRepository  extends JpaRepository<UserEntity, Long> {
     //  userRepository.save(user) — add or update a user
     //  userRepository.deleteById(id) — delete a user by ID
 
-    Optional<UserEntity> findByUsername(String user);
+    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findByEmail(String email);
 }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserEntity user){
+    public Map<String, String> login(@RequestBody UserEntity user){
         return userService.verify(user);
     }
 

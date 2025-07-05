@@ -19,6 +19,10 @@ public class UserEntity {
     private String password;
     private String role;
 
+    @Column(nullable = false)
+    private boolean verified = false;
+    private String verificationToken;
+
     @Override
     public String toString() {
         return "UserEntity{" +

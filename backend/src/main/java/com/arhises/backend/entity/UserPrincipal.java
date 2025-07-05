@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class UserPrincipal implements UserDetails {
 
-    private UserEntity user;
+    private final UserEntity user;
 
     public UserPrincipal(UserEntity user) {
         this.user = user;
@@ -17,7 +17,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
     @Override
@@ -30,7 +30,6 @@ public class UserPrincipal implements UserDetails {
         return this.user.getUsername();
     }
 
-    //TODO: Later take care of the methods below...
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -49,5 +48,9 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserEntity getUser() {
+        return this.user;
     }
 }

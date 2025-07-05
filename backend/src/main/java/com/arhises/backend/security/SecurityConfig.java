@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.
                         sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -49,9 +50,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
